@@ -1,7 +1,9 @@
 package com.kimy.budgetbuddy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -17,10 +25,22 @@ public class SignupActivity extends AppCompatActivity {
     private Button btn_reg;
     private TextView User_Sign;
 
+    private ProgressDialog csDialog;
+
+
+    //Firebase..
+
+    private FirebaseAuth csAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        csAuth = FirebaseAuth.getInstance();
+
+        csDialog = new ProgressDialog(this);
+
         registration();
 
     }
@@ -46,6 +66,32 @@ public class SignupActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(pass)) {
                     User_Pass.setError("Password Required..");
                 }
+
+                csDialog.setMessage("Processing..");
+                csDialog.show();
+
+                csAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()){
+
+                            csDialog.dismiss();
+
+                            Toast.makeText(getApplicationContext(),"Signup Successfuly Completed",Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+
+                        } else {
+
+                            csDialog.dismiss();
+
+                            Toast.makeText(getApplicationContext(),"Signup Faild",Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+                });
 
             }
         });

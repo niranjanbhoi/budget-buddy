@@ -1,7 +1,9 @@
 package com.kimy.budgetbuddy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,8 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.security.PrivateKey;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,15 +25,27 @@ public class MainActivity extends AppCompatActivity {
     private Button btnlogin;
     private TextView csForgetPassword;
     private TextView csSignupHere;
-
+    private ProgressDialog csDialog;
+    private FirebaseAuth csAuth;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        csAuth =FirebaseAuth.getInstance();
+
+        if (csAuth.getCurrentUser()!=null){
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        }
+
+        csDialog =new ProgressDialog(this);
+
+        loginDetails();
     }
 
-    private void logindetails() {
+    private void loginDetails() {
 
         User_Email = findViewById(R.id.user_email);
         User_Pass = findViewById(R.id.user_password);
@@ -43,18 +61,34 @@ public class MainActivity extends AppCompatActivity {
                 String pass = User_Pass.getText().toString().trim();
 
                 if (TextUtils.isEmpty((email))){
-
                     User_Email.setError("Email Required..");
                     return;
-
                 }
 
                 if (TextUtils.isEmpty((pass))){
-
                     User_Pass.setError("Password Required..");
                     return;
-
                 }
+
+                csDialog.setMessage("Processing..");
+                csDialog.show();
+
+                csAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+
+                            csDialog.dismiss();
+                            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                            Toast.makeText(getApplicationContext(),"Login Successful..",Toast.LENGTH_SHORT).show();
+                        }else {
+                            csDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Login Failed..",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
 
             }
         });
@@ -73,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         csForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ReseatActivity.class));
+                startActivity(new Intent(getApplicationContext(), ResetActivity.class));
             }
         });
 
