@@ -49,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
         User_Email = findViewById(R.id.reg_email);
         User_Pass  = findViewById(R.id.reg_password);
         btn_reg = findViewById(R.id.btn_register);
-        User_Sign = findViewById(R.id.signup_reg);
+        User_Sign = findViewById(R.id.sign_up_reg);
 
         btn_reg.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         User_Pass = findViewById(R.id.user_password);
         btnlogin = findViewById(R.id.btn_login);
         csForgetPassword = findViewById(R.id.forget_password);
-        csSignupHere = findViewById(R.id.signup_reg);
+        csSignupHere = findViewById(R.id.sign_up_reg);
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override

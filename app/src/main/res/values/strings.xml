@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">budgetbuddy</string>
+    <string name="app_name">budget buddy</string>
+    <string name="appbar_scrolling_view_behavior">appbar_scrolling_view_behavior</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="dashboard">DashBoard</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="login_title">Wellcome Back</string>
+    <string name="log_in">Log In</string>
+    <string name="forget_password">Forget Password</string>
 </resources>

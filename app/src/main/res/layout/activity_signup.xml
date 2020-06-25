@@ -25,8 +25,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="32dp"
-                android:text="Sign Up"
+                android:textSize="32sp"
+                android:text="@string/sign_up"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:gravity="center"/>
 
@@ -36,9 +36,9 @@
                 android:padding="15dp"
                 android:textColor="@color/text_color"
                 android:textColorHint="@color/text_color"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edit_text_background"
                 android:layout_margin="10dp"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:id="@+id/reg_email"/>
 
             <EditText
@@ -48,9 +48,9 @@
                 android:inputType="textPassword"
                 android:textColor="@color/text_color"
                 android:textColorHint="@color/text_color"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edit_text_background"
                 android:layout_margin="10dp"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:id="@+id/reg_password"/>
 
             <Button
@@ -60,7 +60,7 @@
                 android:padding="15dp"
                 android:background="@color/colorAccent"
                 android:textColor="@color/white"
-                android:text="Sign Up"
+                android:text="@string/sign_up"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:id="@+id/btn_register"/>
 
@@ -69,9 +69,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:gravity="center"
-                android:text="Sign In"
+                android:text="@string/sign_in"
                 android:padding="5dp"
-                android:id="@+id/signup_reg"/>
+                android:id="@+id/sign_up_reg"/>
 
         </LinearLayout>
 
