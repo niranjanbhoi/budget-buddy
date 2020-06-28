@@ -11,4 +11,9 @@
     <string name="login_title">Wellcome Back</string>
     <string name="log_in">Log In</string>
     <string name="forget_password">Forget Password</string>
+    <string name="budget_buddy">Budget Buddy</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
