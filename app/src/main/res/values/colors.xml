@@ -2,12 +2,20 @@
 <resources>
     <color name="colorPrimary">#038DFF</color>
     <color name="colorPrimaryDark">#0061cb</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff1744</color>
 
     <!-- Background color -->
     <color name="start_color">#038DFF</color>
     <color name="center_color">#868DFF</color>
     <color name="end_color">#FA8DFF</color>
+    <!-- Background color -->
+    <color name="background">#212121</color>
+
+    <color name="home_bg">#0061cb</color>
+    <color name="income_bg">#212121</color>
+    <color name="expense_bg">#FA8DFF</color>
+
+    ba
 
     <!--  Tab color -->
     <color name="tab_indicator_color">#2196F3</color>

@@ -17,15 +17,15 @@
 
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:itemIconTint="@color/colorAccent"
-        app:itemTextAppearance="?android:textAppearanceSmall"
         android:layout_gravity="start"
-        android:id="@+id/nav_view"
-        app:itemTextColor="@color/colorPrimary"
+        android:background="#212121"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu"
-        />
+        app:itemIconTint="@color/colorAccent"
+        app:itemTextAppearance="?android:textAppearanceSmall"
+        app:itemTextColor="@color/colorPrimary"
+        app:menu="@menu/nav_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>
