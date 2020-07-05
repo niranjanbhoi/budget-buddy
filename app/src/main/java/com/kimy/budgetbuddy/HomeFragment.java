@@ -30,12 +30,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.kimy.budgetbuddy.Model.Data;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,8 +69,8 @@ public class HomeFragment extends Fragment {
     //firebase
 
     private FirebaseAuth cs_Auth;
-    private DatabaseReference mIncomeDatabase;
-    private DatabaseReference mExpenseDatabase;
+    private DatabaseReference Income_Database;
+    private DatabaseReference Expense_Database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,10 +82,10 @@ public class HomeFragment extends Fragment {
         FirebaseUser mUser= cs_Auth.getCurrentUser();
         String user_id = mUser.getUid();
 
-        mIncomeDatabase= FirebaseDatabase.getInstance().getReference().child("IncomeData").child(user_id);
-        mExpenseDatabase=FirebaseDatabase.getInstance().getReference().child("ExpenseDatabase").child(user_id);
+        Income_Database = FirebaseDatabase.getInstance().getReference().child("IncomeData").child(user_id);
+        Expense_Database =FirebaseDatabase.getInstance().getReference().child("ExpenseDatabase").child(user_id);
 
-       //mIncomeDatabase.keepSynced(true);
+       //IncomeDatabase.keepSynced(true);
         //mExpenseDatabase.keepSynced(true);
 
         //Connect floating button to layout
@@ -138,6 +143,40 @@ public class HomeFragment extends Fragment {
         return myView;
     }
 
+    //floating_btn_animation
+
+    private void ft_btn_animation(){
+
+        if (isOpen){
+
+            fab_income_btn.startAnimation(FadClose);
+            fab_expense_btn.startAnimation(FadClose);
+            fab_income_btn.setClickable(false);
+            fab_expense_btn.setClickable(false);
+
+            fab_income_txt.startAnimation(FadClose);
+            fab_expense_txt.startAnimation(FadClose);
+            fab_income_txt.setClickable(false);
+            fab_expense_txt.setClickable(false);
+            isOpen=false;
+
+        }else {
+            fab_income_btn.startAnimation(FadOpen);
+            fab_expense_btn.startAnimation(FadOpen);
+            fab_income_btn.setClickable(true);
+            fab_expense_btn.setClickable(true);
+
+            fab_income_txt.startAnimation(FadOpen);
+            fab_expense_txt.startAnimation(FadOpen);
+            fab_income_txt.setClickable(true);
+            fab_expense_txt.setClickable(true);
+            isOpen=true;
+
+        }
+
+    }
+
+
     private void add_data(){
 
         fab_income_btn.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +189,7 @@ public class HomeFragment extends Fragment {
         fab_expense_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //expenseDataInsert();
+                expense_data_insert();
             }
         });
 
@@ -163,6 +202,8 @@ public class HomeFragment extends Fragment {
         View my_view=inflater.inflate(R.layout.insert_data,null);
         my_dialog.setView(my_view);
         final AlertDialog dialog=my_dialog.create();
+
+        dialog.setCancelable(false);
 
         final EditText edtAmount=my_view.findViewById(R.id.amount_edt);
         final EditText edtType=my_view.findViewById(R.id.type_edt);
@@ -196,18 +237,19 @@ public class HomeFragment extends Fragment {
                     return;
                 }
 
-                //String id=mIncomeDatabase.push().getKey();
+                String id= Income_Database.push().getKey();
 
-                //String mDate= DateFormat.getDateInstance().format(new Date());
+                String Date= DateFormat.getDateInstance().format(new Date());
 
-                //Data data=new Data(our_amount_int,type,note,id,mDate);
+                Data data=new Data(our_amount_int,type,note,id,Date);
 
-               // mIncomeDatabase.child(id).setValue(data);
+                //assert id != null;
+                Income_Database.child(id).setValue(data);
 
-               // Toast.makeText(getActivity(),"Data ADDED",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"Data Added Successfully..",Toast.LENGTH_SHORT).show();
 
-                //ftAnimation();
-               // dialog.dismiss();
+                ft_btn_animation();
+                dialog.dismiss();
 
             }
         });
@@ -215,7 +257,7 @@ public class HomeFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ftAnimation();
+                ft_btn_animation();
                 dialog.dismiss();
             }
         });
@@ -223,6 +265,71 @@ public class HomeFragment extends Fragment {
         dialog.show();
 
 
+    }
+
+    public void expense_data_insert(){
+        AlertDialog.Builder my_dialog=new AlertDialog.Builder(getActivity());
+        LayoutInflater In_flare=LayoutInflater.from(getActivity());
+        View my_view=In_flare.inflate(R.layout.insert_data,null);
+        my_dialog.setView(my_view);
+
+        final AlertDialog dialog=my_dialog.create();
+
+        dialog.setCancelable(false);
+
+        //edit_text
+        final EditText amount=my_view.findViewById(R.id.amount_edt);
+        final EditText type=my_view.findViewById(R.id.type_edt);
+        final EditText note=my_view.findViewById(R.id.note_edt);
+        //button
+        Button btnSave=my_view.findViewById(R.id.btnSave);
+        Button btnCancel=my_view.findViewById(R.id.btnCancel);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String u_amount=amount.getText().toString().trim();
+                String u_type=type.getText().toString().trim();
+                String u_note=note.getText().toString().trim();
+
+                if (TextUtils.isEmpty(u_amount)){
+                    amount.setError("Required Field..");
+                    return;
+                }
+
+                int int_amount=Integer.parseInt(u_amount);
+
+                if (TextUtils.isEmpty(u_type)){
+                    type.setError("Required Field..");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(u_note)){
+                    note.setError("Required Field..");
+                    return;
+                }
+                String id= Expense_Database.push().getKey();
+                String Date=DateFormat.getDateInstance().format(new Date());
+
+                Data data=new Data(int_amount,u_type,u_note,id,Date);
+                Expense_Database.child(id).setValue(data);
+                Toast.makeText(getActivity(),"Data Added Successfully..",Toast.LENGTH_SHORT).show();
+
+                ft_btn_animation();
+                dialog.dismiss();
+            }
+
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ft_btn_animation();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 }
